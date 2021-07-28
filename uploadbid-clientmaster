@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+		bharatbhushan Broking Admin
+	</title>
+	<link rel="shortcut icon" href="https://www.bharatbhushanbroking.com/wp-content/uploads/2018/09/fav-2.png" type="image/x-icon" />
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
+  <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
+</head>
+<style type="text/css">
+  .dataTables_wrapper {
+    overflow-x: auto;
+  }
+</style>
+
+<style type="text/css">
+	.se-pre-con {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+	background: url('https://www.meon.space/static/images/loader-64x/Preloader_3.gif') center no-repeat #fff;
+  }
+  .form-control {
+  display: inline-block;
+  width: auto;
+  }
+  table.dataTable#display tbody tr.odd {
+	  background-color: #f9f9f9;
+  }
+  .overlay-bg{
+	display: none;
+	position: absolute;
+	top:0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: #000;
+	opacity: .7;
+  }
+  .loader {
+	border: 5px solid #f3f3f3;
+	border-radius: 50%;
+	border-top: 5px solid #475927;
+	width: 60px;
+	height: 60px;
+	-webkit-animation: spin 2s linear infinite;
+	animation: spin 1s linear infinite;
+	margin-left: 45%;
+	margin-top: 30%;
+  }
+  
+  /* Safari */
+  @-webkit-keyframes spin {
+	0% { -webkit-transform: rotate(0deg); }
+	100% { -webkit-transform: rotate(360deg); }
+  }
+  
+  @keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+  }
+  .showData {
+	display: none; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 99999; /* Sit on top */
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgb(0, 0, 0); /* Fallback color */
+	background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+	padding-top: 60px;
+  }
+  
+  /* The Close Button (x) */
+  .clo_se {
+	position: absolute;
+	right: 2px;
+	top: -16px;
+	color: #000;
+	font-size: 35px;
+  }
+  
+  .clo_se:hover,
+  .clo_se:focus {
+	color: #000;
+	cursor: pointer;
+  }
+  
+  .effect8 {
+	position: relative;
+  }
+  .effect8:before,
+  .effect8:after {
+	content: "";
+	position: absolute;
+	z-index: -1;
+	-webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+	-moz-box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+	top: 10px;
+	/*bottom:10px;*/
+	left: 0;
+	right: 0;
+  }
+  /* Add Zoom Animation */
+  .animate {
+	-webkit-animation: animatezoom 0.6s;
+	animation: animatezoom 0.6s;
+	/*border: 5px solid #9AD3DE;*/ /*
+	box-shadow: 0px 1px 1px rgba(000,000,000,0.5),inset 1px 2px 0px rgba(255,255,255,0.4);*/
+  }
+  
+  @-webkit-keyframes animatezoom {
+	from {
+	  -webkit-transform: scale(0);
+	}
+	to {
+	  -webkit-transform: scale(1);
+	}
+  }
+  
+  @keyframes animatezoom {
+	from {
+	  transform: scale(0);
+	}
+	to {
+	  transform: scale(1);
+	}
+  }
+  .edit-popup{
+	  width: 35%;
+	  background: #fff;
+	}
+	.padding_editdiv
+	{
+	  padding-right: 55px;
+	  padding-left: 55px;
+	  padding-top: 29px;
+	  padding-bottom: 50px;
+	}
+  @media only screen and (max-width: 600px) {
+	.showData {
+	  padding: 0;
+	}
+	.edit-popup{
+		width: 100%;
+		top: 10%;
+	  }
+	  .padding_editdiv
+	  {
+		padding-right: 16px;
+		padding-left: 16px;
+	  }
+  }
+  </style>
+<body>
+	<div class="container-fluid mb-5 mt-3">
+        <div class="row">
+            <div class="col-md-6 w-60">
+                <img src="https://www.meon.space/static/bharatipo/images/bharatlogo.png" class="logos" alt="logo" />
+            </div>
+            <div class="col-md-6">
+				<input type="file" class="border" name ="faq_input_uploadbid" id="faq_input_uploadbid" aria-describedby="fileHelp"> 
+				<button type="button" class="btn btn-info" id="faq_submit_uploadbid" >Upload Bids</button>
+			</div>
+    	</div>
+	</div>
+  <input type="file" class="border" name ="faq_input" id="faq_input" aria-describedby="fileHelp"> 
+	<button type="button" class="btn btn-info" id="faq_submit" >Upload Client Master</button>
+<div class="d-flex justify-content-end" style="margin-top: 12px; margin-bottom: 12px; margin-right: 12px;">
+	<button class="btn btn-danger mr-2" onclick="add()">Add &#10010;</button>
+	<button class="btn btn-info" onclick="excel_download()">Download Report</button>
+</div>
+<div class="container-fluid pl-4 pr-4">
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a data-toggle="tab" class="nav-link active" href="#bucket">Non-Client</a>
+      </li>
+      <li class="nav-item">
+        <a data-toggle="tab" class="nav-link" href="#client">Client</a>
+      </li>
+      <li class="nav-item">
+        <a data-toggle="tab" class="nav-link" href="#clientmaster">Client Master</a>
+      </li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div class="tab-pane active py-3" id="bucket">
+        <table class="display" cellspacing="0" width="100%">
+          	<thead>
+				<th>Bidid</th>
+		    	<th>Date & Time</th>
+		    	<th>DP Name</th>
+				<th>Client code/Phone number</th>
+				<th>Rate</th>
+				<th>Quantity</th>
+				<th>Accountnumber_upiid</th>
+				<th>Clientbenfid</th>
+				<th>Dpid</th>
+				<th>Depository</th>
+				<th>Applicantname</th>
+			</thead>
+			<tbody>
+				{% for x in data %}
+					{% if x['clientCodeOrPhoneNo']|length > 9 %}
+					<tr>
+						<td>{{x['bidid']}}</td>
+						<td>{{x['datetime']}}</td>
+						<td>{{x['userdpid']}}</td>
+						<td>{{x['clientCodeOrPhoneNo']}}</td>
+						<td>{{x['rate']}}</td>
+						<td>{{x['quantity']}}</td>
+						<td>{{x['accountnumber_upiid']}}</td>
+						<td>{{x['clientbenfid']}}</td>
+						<td>{{x['dpid']}}</td>
+						<td>{{x['depository']}}</td>
+						<td>{{x['applicantname']}}</td>
+					</tr>
+					{% endif %}
+				{% endfor %}
+			</tbody>
+        </table>
+      </div>
+
+      <div class="tab-pane fade py-3" id="client">
+        <table class="display" cellspacing="0" width="100%">
+          	<thead>
+				<th>Bidid</th>
+		    	<th>Date & Time</th>
+		    	<th>DP Name</th>
+				<th>Client code/Phone number</th>
+				<th>Rate</th>
+				<th>Quantity</th>
+				<th>Accountnumber_upiid</th>
+				<th>Clientbenfid</th>
+				<th>Dpid</th>
+				<th>Depository</th>
+				<th>Applicantname</th>
+			</thead>
+			<tbody>
+				{% for x in data %}
+					{% if x['clientCodeOrPhoneNo']|length < 10 %}
+					<tr>
+						<td>{{x['bidid']}}</td>
+						<td>{{x['datetime']}}</td>
+						<td>{{x['userdpid']}}</td>
+						<td>{{x['clientCodeOrPhoneNo']}}</td>
+						<td>{{x['rate']}}</td>
+						<td>{{x['quantity']}}</td>
+						<td>{{x['accountnumber_upiid']}}</td>
+						<td>{{x['clientbenfid']}}</td>
+						<td>{{x['dpid']}}</td>
+						<td>{{x['depository']}}</td>
+						<td>{{x['applicantname']}}</td>
+					</tr>
+					{% endif %}
+				{% endfor %}
+			</tbody>
+        </table>
+      </div>
+
+      <div class="tab-pane fade py-3" id="clientmaster">
+        <table id="display" cellspacing="0" width="100%">
+          	<thead>
+				<th>Id</th>
+				<th>Name</th>
+				<th>Email</th>
+				<th>Mobile</th>
+				<th>Dpid</th>
+				<th>Clientcode</th>
+				<th>Depository</th>
+				<th>Pancard</th>
+				<th>Modify</th>
+				<th>Delete</th>
+			</thead>
+			<tbody id="clientdata">
+				
+			</tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+<input type="hidden" name="" id="select_id">
+
+<div id="id04" class="showData" align="center">
+    <div id="showData" class="animate effect8 edit-popup">
+      <div class="padding_editdiv text-left">
+        <h4 class="text-center">Information</h4>
+        <div class="row mt-1">
+        	<div class="col-sm-3 pl-0">
+        		<strong>Name</strong>
+        	</div>
+        	<div class="col-sm-9">
+        		<input type="text" name="" class="form-control w-100" id="name">
+        	</div>
+        </div>
+        <div class="row mt-1">
+        	<div class="col-sm-3 pl-0">
+        		<strong>Email</strong>
+        	</div>
+        	<div class="col-sm-9">
+	        	<input type="email" name="" class="form-control w-100" id="email">
+	        </div>
+	    </div>
+	    <div class="row mt-1">
+        	<div class="col-sm-3 pl-0">
+        		<strong>Mobile</strong>
+        	</div>
+        	<div class="col-sm-9">
+	        	<input type="number" name="" class="form-control w-100" id="mobile" maxlength="10">
+	        </div>
+	    </div>
+	    <div class="row mt-1">
+        	<div class="col-sm-3 pl-0">
+        		<strong>DPID</strong>
+        	</div>
+        	<div class="col-sm-9">
+	        	<input type="text" name="" class="form-control w-100" id="dpid">
+	        </div>
+	    </div>
+	    <div class="row mt-1">
+        	<div class="col-sm-3 p-0">
+        		<strong>Client Code</strong>
+        	</div>
+        	<div class="col-sm-9">
+	        	<input type="text" name="" class="form-control w-100" id="clientcode">
+	        </div>
+	    </div>
+	    <div class="row mt-1">
+        	<div class="col-sm-3 pl-0">
+        		<strong>Depositry</strong>
+        	</div>
+        	<div class="col-sm-9 text-left">
+	        	<input type="checkbox" name="" id="cdsl_check" onclick="updatecdslcheckbox()"><label>CDSL</label>
+	        	<input type="checkbox" name="" class="ml-3" id="nsdl_check" onclick="updatensdlcheckbox()"><label>NSDL</label>
+	        </div>
+	    </div>
+	    <div class="row mt-1">
+        	<div class="col-sm-3 pl-0">
+        		<strong>Pancard</strong>
+        	</div>
+        	<div class="col-sm-9">
+	        	<input type="text" name="" class="form-control w-100" id="pancard">
+	        </div>
+	    </div>
+	    <div class="row mt-3">
+	    	<div class="col-sm-12" align="center">
+	    		<button class="btn btn-success w-50" onclick="update()" id="update">Update</button>
+	    		<button class="btn btn-success w-50" onclick="add_new()" id="add_new">Update</button>
+	    	</div>
+	    </div>
+      </div>
+      <span onclick="closeid04()" class="clo_se" title="Close Modal">&times;</span>
+    </div>
+  </div>
+  <div class="se-pre-con" style="display: none;"></div>
+  <div class="overlay-bg">
+    <div class="loader"></div>
+  </div>
+
+<script type="text/javascript">
+	var json_data='';
+  	$.ajax({
+      type: 'POST',
+      contentType: 'application/json; charset=utf-8',
+      url: '/ipo/bharatbhushan/clientmaster',
+      data: JSON.stringify(json_data),
+      success: function(data) {
+        console.log(data);
+        tbody='';
+        for (var i = 0; i < data['data'].length; i++) 
+        {
+        	if(data['data'][i][0]% 2 !== 0)
+        	{
+        		var no='odd'
+        	}
+        	else
+        	{
+        		var no='even'
+        	}
+	        tbody += '<tr role="row" class="'+no+'"><td class="sorting_1">'+data['data'][i][0]+'</td><td>'+data['data'][i][1]+'</td><td>'+data['data'][i][2]+'</td><td>'+data['data'][i][3]+'</td><td>'+data['data'][i][4]+'</td><td>'+data['data'][i][5]+'</td><td>'+data['data'][i][6]+'</td><td>'+data['data'][i][7]+'</td><td><button class="btn btn-info" onclick="modify(\''+data['data'][i][0]+'\',\''+data['data'][i][1]+'\',\''+data['data'][i][2]+'\',\''+data['data'][i][3]+'\',\''+data['data'][i][4]+'\',\''+data['data'][i][5]+'\',\''+data['data'][i][6]+'\',\''+data['data'][i][7]+'\')">Modify</button></td><td><button class="btn btn-danger" onclick="d_elete('+data['data'][i][0]+')">Delete</button></td></tr>';
+        }
+        $("#clientdata").replaceWith('<tbody id="clientdata">'+tbody+'</tbody>');
+      },
+      dataType: 'json',
+  	});
+
+  	function modify(a,b,c,d,e,f,g,h)
+  	{
+  		$('#id04').css('display','block');
+  		$('#add_new').css('display','none');
+  		$('#update').css('display','block');
+  		$('#select_id').val(a)
+  		$('#name').val(b);
+  		$('#email').val(c);
+  		$('#mobile').val(d);
+  		$('#dpid').val(e);
+  		$('#clientcode').val(f);
+  		$('#pancard').val(h);
+  		if(g='cdsl')
+  		{
+  			$('#cdsl_check').attr('checked',true);
+  		}
+  		else
+  		{
+  			$('#nsdl_check').attr('checked',true);
+  		}
+  	}
+  	function update()
+  	{
+  		$(".overlay-bg").show();
+  		var dpidnsdl = document.getElementById("nsdl_check");
+   		var cdslornsdl = dpidnsdl.checked ? 'nsdl' : 'cdsl'
+  		var json_data={user:$('#clientcode').val(), name:$('#name').val(), email:$('#email').val(), dpid:$('#dpid').val(), nsdlorcdsl:cdslornsdl, pan:$('#pancard').val(), number:$('#mobile').val()};
+	  	$.ajax({
+			type: 'POST',
+			contentType: 'application/json; charset=utf-8',
+			url: '/ipo/bharatbhushan/clientmaster/modify',
+			data: JSON.stringify(json_data),
+			success: function(data) {
+				$(".overlay-bg").hide();
+				$('#id04').css('display','none');
+				alert(data['data']);
+				location.reload();
+			},
+			dataType: 'json',
+	  	});
+  	}
+  	function add()
+  	{
+  		$('#id04').css('display','block');
+  		$('#add_new').css('display','block');
+  		$('#update').css('display','none');
+  	}
+  	function add_new()
+  	{
+  		if($('#clientcode').val()=='' || $('#name').val()=='' || $('#email').val()=='' || $('#dpid').val()=='' || $('#pancard').val()=='' || $('#mobile').val()=='')
+  		{
+  			alert('Please fill all the field')
+  		}
+  		else 
+  		{
+  			if($('#nsdl_check').checked==true && $('#cdsl_check').checked==true)
+  			{
+		  		alert('Please checked the checkbox');
+  			}
+  			else
+	  		{
+		  		$(".overlay-bg").show();
+		  		var dpidnsdl = document.getElementById("nsdl_check");
+		   		var cdslornsdl = dpidnsdl.checked ? 'nsdl' : 'cdsl'
+		  		var json_data={user:$('#clientcode').val(), name:$('#name').val(), email:$('#email').val(), dpid:$('#dpid').val(), nsdlorcdsl:cdslornsdl, pan:$('#pancard').val(), number:$('#mobile').val()};
+			  	$.ajax({
+					type: 'POST',
+					contentType: 'application/json; charset=utf-8',
+					url: '/ipo/bharatbhushan/clientmaster/add',
+					data: JSON.stringify(json_data),
+					success: function(data) {
+						$(".overlay-bg").hide();
+						$('#id04').css('display','none');
+						alert(data['data']);
+						location.reload();
+					},
+					dataType: 'json',
+			  	});
+			}
+  		}
+  		
+  	}
+  	function updatecdslcheckbox() {
+	  let cdsl = document.getElementById('cdsl_check');
+	  if (cdsl.checked) {
+	    $('#nsdl_check').prop("checked", false)
+	  }
+	}
+	function updatensdlcheckbox() {
+	  let ndsl = document.getElementById('nsdl_check');
+	  if (ndsl.checked) {
+	    $('#cdsl_check').prop("checked", false)
+	  }
+	}
+  	function d_elete(e)
+  	{
+  		var r = confirm("Are you sure you want to delete this?");
+  		if (r == true) {
+  			$(".overlay-bg").show();
+	  		var json_data={'userid':e};
+		  	$.ajax({
+				type: 'POST',
+				contentType: 'application/json; charset=utf-8',
+				url: '/ipo/bharatbhushan/clientmaster/delete',
+				data: JSON.stringify(json_data),
+				success: function(data) {
+					alert(data['data']);
+					$(".overlay-bg").hide();
+				},
+				dataType: 'json',
+		  	});
+		}
+		else 
+		{
+		    return false;
+		}
+  	}
+  	function closeid04()
+  	{
+  		$('#id04').css('display','none');
+  	}
+
+	function excel_download()
+	{
+		var json_data='';
+	  	$.ajax({
+	      type: 'GET',
+	      contentType: 'application/json; charset=utf-8',
+		  url: '/ipo/bharatbhushan/admin/downloadexcel',
+	      data: JSON.stringify(json_data),
+	      success: function(data) {
+	        console.log(data);
+	        window.open(window.location.origin+"/"+data['filename']);
+	      },
+	      dataType: 'json',
+	  	});
+	}
+
+	function send_form_data(base_url,form_data){
+	// alert('form data');
+	$(".se-pre-con").show();
+	    $.ajax({
+	        url: '/ipo/bharatbhushan/admin/insertexcel',
+	        data: form_data,
+	        type: 'POST',
+	        contentType: false,
+	        processData: false,
+	        success:function(data){
+	           console.log(data);
+			   alert(data);
+	           $(".se-pre-con").hide();
+
+	        }
+
+	    });
+	}
+
+   $('#faq_submit').click(function() {
+
+    var formData = new FormData();
+     formData.append('faq_file', $('#faq_input')[0].files[0]);
+    // formData.append('synonyms', $('#synonyms_input')[0].files[0]);
+    send_form_data('faq',formData);    
+ });
+
+ function upload_bidsubmit(base_url, form_data) {
+			// alert('form data');
+			$(".se-pre-con").show();
+			$.ajax({
+				url: '/ipo/bharatbhushan/massbid',
+				data: form_data,
+				type: 'POST',
+				contentType: false,
+				processData: false,
+				success: function (data) {
+					console.log(data);
+					$(".se-pre-con").hide();
+					alert('massbid uploaded successful.');
+				}
+			});
+		}
+
+		$('#faq_submit_uploadbid').click(function () {
+
+			var formData = new FormData();
+			formData.append('faq_file', $('#faq_input_uploadbid')[0].files[0]);
+			// formData.append('synonyms', $('#synonyms_input')[0].files[0]);
+			upload_bidsubmit('faq', formData);
+		});
+</script>
+<script type="text/javascript">
+        /* = NOTE : don't add "id" in <table> if not necessary, is added than replace each "id" here = */
+      $('.display').DataTable({
+        responsive: true
+      });
+      /* =========================================================================================== */
+      /* ============================ BOOTSTRAP 3/4 EVENT ========================================== */
+      $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        $($.fn.dataTable.tables(true)).DataTable().columns.adjust().responsive.recalc();
+      });    
+      /* =========================================================================================== */
+    </script>
+    <script type="text/javascript">
+  $(function() {
+ var table = $("#display").DataTable();
+
+ // Date range vars
+ minDateFilter = "";
+ maxDateFilter = "";
+
+ $("#daterange").daterangepicker();
+ $("#daterange").on("apply.daterangepicker", function(ev, picker) {
+  minDateFilter = Date.parse(picker.startDate);
+  maxDateFilter = Date.parse(picker.endDate);
+  
+  $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+  var date = Date.parse(data[1]);
+
+  if (
+   (isNaN(minDateFilter) && isNaN(maxDateFilter)) ||
+   (isNaN(minDateFilter) && date <= maxDateFilter) ||
+   (minDateFilter <= date && isNaN(maxDateFilter)) ||
+   (minDateFilter <= date && date <= maxDateFilter)
+  ) {
+   return true;
+  }
+  return false;
+ });
+ table.draw();
+}); 
+});
+</script>
+    <script src="https://pickeringtoyota.com/mastercrm-newtheme/assets/plugin/datatable/datatables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+</body>
+</html>
